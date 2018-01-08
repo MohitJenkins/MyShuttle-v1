@@ -22,19 +22,25 @@ public class DataAccess
 {
 	// Some database-specific details we'll need
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/alm";
-	private static final String DB_USER = "user";
-	private static final String DB_PASS = "password";
-	
+	private static final String DB_USER = System.getenv("DB_USERNAME");
+	private static final String DB_PASS = System.getenv("DB_PASSWORD");
+	private static String DBCONN = "jdbc:mysql://"+System.getenv("DB_SERVER")+":3306/alm?useSSL=true&requireSSL=false&autoReconnect=true";
+
+
 	private static Connection theConnection;
 	static {
 		try {
 			// Bootstrap driver into JVM
 			Class.forName(DB_DRIVER);
-			theConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+			theConnection = DriverManager.getConnection(DBCONN, DB_USER, DB_PASS);
+			if (theConnection == null){
+				throw new Exception("DB URL"+DBCONN);
+			}
+			//theConnection = DriverManager.getConnection(DBCONN);
 		}
 		catch (Exception ex) {
 			// Eh.... just give up
+			//throw new Exception("DB URL"+DBCONN, ex);
             ex.printStackTrace();
 			System.exit(-1);
 		}

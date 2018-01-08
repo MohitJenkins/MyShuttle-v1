@@ -19,6 +19,9 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = request.getParameter("email");
         String password = request.getParameter("password");
+        /*session.setAttribute("DB_URL", DataAccess.DBCONN);
+        session.setAttribute("DB_USERNAME", DataAccess.DB_USER);
+        session.setAttribute("DB_PASSWORD", DataAccess.DB_PASS);*/
         Employee employee = DataAccess.login(username, password);
         if (employee != null) {
             session.setAttribute("employee", employee);
@@ -37,6 +40,7 @@ public class LoginServlet extends HttpServlet {
         }
         else {
             request.getRequestDispatcher("/loginFail.jsp").forward(request, response);
+            
         }
     }
 }
